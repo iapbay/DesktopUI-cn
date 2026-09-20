@@ -657,10 +657,15 @@ fn tray_main() {
                         });
                     }
 
-                    nw_obj.get("type").map(|a| {
+                      nw_obj.get("type").map(|a| {
                         a.as_str().map(|a| {
+                            let type_cn = match a {
+                                "PRIVATE" => "私有",
+                                "PUBLIC" => "公开",
+                                _ => a,
+                            };
                             network_menu.push(TrayMenuItem::Text {
-                                text: format!("网络类型:\t\t  {}", a),
+                                text: format!("网络类型:\t\t  {}", type_cn),
                                 checked: false,
                                 disabled: true,
                                 handler: None,
@@ -687,12 +692,21 @@ fn tray_main() {
 
                     network_menu.push(TrayMenuItem::Separator);
 
+                    let status_cn = match status {
+                        "OK" => "正常",
+                        "REQUESTING_CONFIGURATION" => "请求配置中",
+                        "ACCESS_DENIED" => "拒绝访问",
+                        "PORT_ERROR" => "端口错误",
+                        "AUTHENTICATION_REQUIRED" => "需要认证",
+                        _ => status,
+                    };
+                    
                     network_menu.push(TrayMenuItem::Text {
-                        text: format!("状态:\t\t\t  {}", status),
+                        text: format!("状态:\t\t\t  {}", status_cn),
                         checked: false,
                         disabled: true,
                         handler: None,
-                    });
+                    });;
 
                     if status == "OK" {
                         let _ = sso_notification_shown.lock().remove(&(*network).0);
