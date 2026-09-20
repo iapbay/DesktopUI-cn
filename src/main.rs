@@ -486,12 +486,12 @@ fn tray_main() {
 
             let address2 = address.clone();
             menu.push(TrayMenuItem::Text {
-                text: format!("My Address:  {} ", address),
+                text: format!("本机地址:  {} ", address),
                 checked: false,
                 disabled: false,
                 handler: Some(Box::new(move || {
                     copy_to_clipboard(address2.as_str());
-                    notify("Copied this node's ZeroTier address to clipboard.", None);
+                    notify("已复制本机地址。", None);
                 })),
             });
 
@@ -499,7 +499,7 @@ fn tray_main() {
             let joining2 = joining.clone();
             let join_window_open2 = join_window_open.clone();
             menu.push(TrayMenuItem::Text {
-                text: "Join New Network...".into(),
+                text: "加入网络...".into(),
                 checked: false,
                 disabled: false,
                 handler: Some(Box::new(move || {
@@ -575,12 +575,12 @@ fn tray_main() {
                     let nwid = (*network).0.clone();
                     joining.lock().retain(|j| !j.eq(nwid.as_str()));
                     network_menu.push(TrayMenuItem::Text {
-                        text: format!("Network ID:\t\t  {}", (*network).0),
+                        text: format!("网络 ID:\t\t  {}", (*network).0),
                         checked: false,
                         disabled: false,
                         handler: Some(Box::new(move || {
                             copy_to_clipboard(nwid.as_str());
-                            notify("Copied network ID to clipboard.", None);
+                            notify("已复制网络 ID。", None);
                         })),
                     });
 
@@ -588,7 +588,7 @@ fn tray_main() {
 
                     let (nwid, client2) = ((*network).0.clone(), client.clone());
                     network_menu.push(TrayMenuItem::Text {
-                        text: format!("Allow Managed Addresses"),
+                        text: format!("分配节点 IP"),
                         checked: allow_managed_addresses,
                         disabled: false,
                         handler: Some(Box::new(move || {
@@ -600,7 +600,7 @@ fn tray_main() {
                     });
                     let (nwid, client2) = ((*network).0.clone(), client.clone());
                     network_menu.push(TrayMenuItem::Text {
-                        text: format!("Allow Assignment of Global IPs"),
+                        text: format!("分配公网 IP"),
                         checked: allow_global_ips,
                         disabled: false,
                         handler: Some(Box::new(move || {
@@ -612,7 +612,7 @@ fn tray_main() {
                     });
                     let (nwid, client2) = ((*network).0.clone(), client.clone());
                     network_menu.push(TrayMenuItem::Text {
-                        text: format!("Allow Default Route Override"),
+                        text: format!("接管全局流量"),
                         checked: allow_default,
                         disabled: false,
                         handler: Some(Box::new(move || {
@@ -624,7 +624,7 @@ fn tray_main() {
                     });
                     let (nwid, client2) = ((*network).0.clone(), client.clone());
                     network_menu.push(TrayMenuItem::Text {
-                        text: format!("Allow DNS Configuration"),
+                        text: format!("接受 DNS 下发"),
                         checked: allow_dns,
                         disabled: false,
                         handler: Some(Box::new(move || {
@@ -640,7 +640,7 @@ fn tray_main() {
                     nw_obj.get("mac").map(|a| {
                         a.as_str().map(|a| {
                             network_menu.push(TrayMenuItem::Text {
-                                text: format!("Ethernet:\t\t\t  {}", a),
+                                text: format!("MAC 地址:\t\t  {}", a),
                                 checked: false,
                                 disabled: true,
                                 handler: None,
@@ -650,7 +650,7 @@ fn tray_main() {
 
                     if !device_name.is_empty() {
                         network_menu.push(TrayMenuItem::Text {
-                            text: format!("Device:\t\t\t  {}", device_name),
+                            text: format!("虚拟网卡:\t\t  {}", device_name),
                             checked: false,
                             disabled: true,
                             handler: None,
@@ -660,7 +660,7 @@ fn tray_main() {
                     nw_obj.get("type").map(|a| {
                         a.as_str().map(|a| {
                             network_menu.push(TrayMenuItem::Text {
-                                text: format!("Type:\t\t\t  {}", a),
+                                text: format!("网络类型:\t\t  {}", a),
                                 checked: false,
                                 disabled: true,
                                 handler: None,
@@ -674,7 +674,7 @@ fn tray_main() {
                                 if let Some(domain) = domain.as_str() {
                                     if !domain.is_empty() {
                                         network_menu.push(TrayMenuItem::Text {
-                                            text: format!("DNS Domain:\t\t  {}", domain),
+                                            text: format!("DNS 域名:\t\t  {}", domain),
                                             checked: false,
                                             disabled: true,
                                             handler: None,
@@ -688,7 +688,7 @@ fn tray_main() {
                     network_menu.push(TrayMenuItem::Separator);
 
                     network_menu.push(TrayMenuItem::Text {
-                        text: format!("Status:\t\t\t  {}", status),
+                        text: format!("状态:\t\t\t  {}", status),
                         checked: false,
                         disabled: true,
                         handler: None,
@@ -710,7 +710,7 @@ fn tray_main() {
                                         chrono::DateTime::<chrono::Local>::from(auth_exp_time);
                                     network_menu.push(TrayMenuItem::Text {
                                         text: format!(
-                                            "Auth Expire:\t\t  {}",
+                                            "授权过期:\t\t  {}",
                                             auth_exp_time.format("%Y-%m-%d %H:%M:%S").to_string()
                                         ),
                                         checked: false,
@@ -728,7 +728,7 @@ fn tray_main() {
                                 login_needed_networks
                                     .push(((*network).0.clone(), auth_url.clone()));
                                 network_menu.push(TrayMenuItem::Text {
-                                    text: "Open SSO Login URL...".into(),
+                                    text: "打开 SSO 登录链接...".into(),
                                     checked: false,
                                     disabled: false,
                                     handler: Some(Box::new(move || {
@@ -760,13 +760,13 @@ fn tray_main() {
                                                     .split_once('/')
                                                     .map_or(a_copy.as_str(), |a| a.0),
                                             );
-                                            notify("Copied address to clipboard.", None);
+                                            notify("已复制 IP 地址。", None);
                                         })),
                                     });
                                 });
                             }
                             network_menu.push(TrayMenuItem::Submenu {
-                                text: "Managed Addresses ".into(),
+                                text: "下发 IP ".into(),
                                 checked: false,
                                 items: assigned_addrs_menu,
                             });
@@ -816,19 +816,19 @@ fn tray_main() {
                         });
                         let mut managed_routes_menu: Vec<TrayMenuItem> = Vec::new();
                         for r in managed_routes2.iter() {
-                            let s = format!("{} via {}", (*r).0, (*r).1);
+                            let s = format!("{} 经由 {}", (*r).0, (*r).1);
                             managed_routes_menu.push(TrayMenuItem::Text {
                                 text: s.clone(),
                                 checked: false,
                                 disabled: false,
                                 handler: Some(Box::new(move || {
                                     copy_to_clipboard(s.as_str());
-                                    notify("Copied managed route to clipboard.", None);
+                                    notify("已复制路由规则。", None);
                                 })),
                             });
                         }
                         network_menu.push(TrayMenuItem::Submenu {
-                            text: "Managed Routes ".into(),
+                            text: "下发路由 ".into(),
                             checked: false,
                             items: managed_routes_menu,
                         });
@@ -843,7 +843,7 @@ fn tray_main() {
                         .into();
                     let settings = serde_json::to_string(&nw_obj).unwrap_or(String::new());
                     network_menu.push(TrayMenuItem::Text {
-                        text: "Disconnect ".into(),
+                        text: "断开连接 ".into(),
                         checked: false,
                         disabled: false,
                         handler: Some(Box::new(move || {
@@ -881,7 +881,7 @@ fn tray_main() {
 
             if networks_empty {
                 menu.push(TrayMenuItem::Text {
-                    text: "(no networks joined)".into(),
+                    text: "(未加入任何网络)".into(),
                     checked: false,
                     disabled: true,
                     handler: None,
@@ -903,7 +903,7 @@ fn tray_main() {
                             checked: false,
                             items: vec![
                                 TrayMenuItem::Text {
-                                    text: "Reconnect".into(),
+                                    text: "重新连接".into(),
                                     checked: false,
                                     disabled: false,
                                     handler: Some(Box::new(move || {
@@ -914,7 +914,7 @@ fn tray_main() {
                                     })),
                                 },
                                 TrayMenuItem::Text {
-                                    text: "Forget".into(),
+                                    text: "忘记网络".into(),
                                     checked: false,
                                     disabled: false,
                                     handler: Some(Box::new(move || {
@@ -935,7 +935,7 @@ fn tray_main() {
                 login_needed_networks.sort_unstable();
                 for (nwid, auth_url) in login_needed_networks.drain(..) {
                     menu.push(TrayMenuItem::Text {
-                        text: format!("{}\tOpen SSO Login URL... ", nwid),
+                        text: format!("{}\t打开 SSO 登录链接... ", nwid),
                         checked: false,
                         disabled: false,
                         handler: Some(Box::new(move || {
@@ -950,7 +950,7 @@ fn tray_main() {
             {
                 let dirty_flag2 = dirty_flag.clone();
                 menu.push(TrayMenuItem::Text {
-                    text: "Start UI at Login ".into(),
+                    text: "开机自启 ".into(),
                     checked: START_ON_LOGIN.load(std::sync::atomic::Ordering::Relaxed),
                     disabled: false,
                     handler: Some(Box::new(move || {
@@ -991,7 +991,7 @@ fn tray_main() {
             {
                 let dirty_flag2 = dirty_flag.clone();
                 menu.push(TrayMenuItem::Text {
-                    text: "Start UI at Login ".into(),
+                    text: "开机自启 ".into(),
                     checked: START_ON_LOGIN.load(std::sync::atomic::Ordering::Relaxed),
                     disabled: false,
                     handler: Some(Box::new(move || {
@@ -1018,7 +1018,7 @@ fn tray_main() {
 
             let about_child2 = about_child.clone();
             menu.push(TrayMenuItem::Text {
-                text: "About ".into(),
+                text: "关于 ".into(),
                 checked: false,
                 disabled: false,
                 handler: Some(Box::new(move || {
@@ -1036,7 +1036,7 @@ fn tray_main() {
             });
         } else {
             menu.push(TrayMenuItem::Text {
-                text: "Waiting for ZeroTier system service...".into(),
+                text: "正在等待 ZeroTier 系统服务...".into(),
                 checked: false,
                 disabled: true,
                 handler: None,
@@ -1045,7 +1045,7 @@ fn tray_main() {
 
         let exit_flag2 = exit_flag.clone();
         menu.push(TrayMenuItem::Text {
-            text: "Quit ZeroTier UI ".into(),
+            text: "退出程序 ".into(),
             checked: false,
             disabled: false,
             handler: Some(Box::new(move || {
@@ -1077,7 +1077,7 @@ fn tray_main() {
             {
                 notify(
                     format!("ZeroTier network {} requires SSO authentication. Select 'Open SSL Login URL' to proceed.", nwid).as_str(),
-                    Some(("Open SSL Login URL...".into(), auth_url.clone()))
+                    Some(("打开 SSO 登录链接...".into(), auth_url.clone()))
                 );
             }
         }
